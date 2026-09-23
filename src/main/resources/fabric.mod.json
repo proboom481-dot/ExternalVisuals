@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "externalvisuals",
+  "version": "${version}",
+  "name": "ExternalVisuals",
+  "description": "A customizable visual and PvP client for Minecraft 1.16.5.",
+  "authors": [
+    "ExternalVisuals Team"
+  ],
+  "environment": "client",
+
+  "mixins": [
+    "externalvisuals.mixins.json"
+  ],
+
+  "entrypoints": {
+    "client": [
+      "com.externalvisuals.ExternalVisuals"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
