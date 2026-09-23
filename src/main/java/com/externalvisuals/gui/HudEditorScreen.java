@@ -3,7 +3,6 @@ package com.externalvisuals.gui;
 import com.externalvisuals.ExternalVisuals;
 import com.externalvisuals.config.ConfigManager;
 import com.externalvisuals.module.Module;
-import com.externalvisuals.module.ModuleCategory;
 import com.externalvisuals.modules.hud.HudModule;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
@@ -56,7 +55,7 @@ public final class HudEditorScreen extends Screen {
             int mouseY,
             float delta
     ) {
-        fill(
+        DrawableHelper.fill(
                 matrices,
                 0,
                 0,
@@ -65,11 +64,9 @@ public final class HudEditorScreen extends Screen {
                 0xE9000008
         );
 
-        drawGrid(
-                matrices
-        );
+        drawGrid(matrices);
 
-        drawCenteredString(
+        DrawableHelper.drawCenteredString(
                 matrices,
                 textRenderer,
                 "HUD EDITOR",
@@ -78,7 +75,7 @@ public final class HudEditorScreen extends Screen {
                 AMOLEDTheme.TEXT
         );
 
-        drawCenteredString(
+        DrawableHelper.drawCenteredString(
                 matrices,
                 textRenderer,
                 "Drag components • Mouse wheel = scale • Right click = reset",
@@ -96,7 +93,7 @@ public final class HudEditorScreen extends Screen {
             );
         }
 
-        drawCenteredString(
+        DrawableHelper.drawCenteredString(
                 matrices,
                 textRenderer,
                 "ESC — back",
@@ -115,7 +112,7 @@ public final class HudEditorScreen extends Screen {
 
     private void drawGrid(MatrixStack matrices) {
         for (int x = 0; x < width; x += 32) {
-            fill(
+            DrawableHelper.fill(
                     matrices,
                     x,
                     0,
@@ -126,7 +123,7 @@ public final class HudEditorScreen extends Screen {
         }
 
         for (int y = 0; y < height; y += 32) {
-            fill(
+            DrawableHelper.fill(
                     matrices,
                     0,
                     y,
@@ -194,7 +191,7 @@ public final class HudEditorScreen extends Screen {
                     : 0x66202028;
         }
 
-        fill(
+        DrawableHelper.fill(
                 matrices,
                 x,
                 y,
@@ -204,10 +201,9 @@ public final class HudEditorScreen extends Screen {
         );
 
         if (hud.isBorderEnabled()) {
-            int color =
-                    hud.getColor();
+            int color = hud.getColor();
 
-            fill(
+            DrawableHelper.fill(
                     matrices,
                     x,
                     y,
@@ -216,7 +212,7 @@ public final class HudEditorScreen extends Screen {
                     color
             );
 
-            fill(
+            DrawableHelper.fill(
                     matrices,
                     x,
                     y + drawHeight - 2,
@@ -245,7 +241,7 @@ public final class HudEditorScreen extends Screen {
                     1.0f
             );
 
-            drawString(
+            DrawableHelper.drawString(
                     matrices,
                     textRenderer,
                     label,
@@ -258,7 +254,7 @@ public final class HudEditorScreen extends Screen {
         }
 
         if (hovered) {
-            drawString(
+            DrawableHelper.drawString(
                     matrices,
                     textRenderer,
                     Math.round(hud.getX())
