@@ -913,26 +913,19 @@ public final class SecretMenuScreen extends Screen {
     }
 
     private void fillScreen(
-            MatrixStack matrices,
-            int color
-    ) {
+        MatrixStack matrices,
+        int color
+) {
 
-        fill(
-                matrices,
-                0,
-                0,
-                width,
-                height,
-          fill(
-                matrices,
-                0,
-                0,
-                width,
-                height,
-                color
-        );
-    }
-
+    fill(
+            matrices,
+            0,
+            0,
+            width,
+            height,
+            color
+    );
+}
     private void drawRect(
             MatrixStack matrices,
             int left,
