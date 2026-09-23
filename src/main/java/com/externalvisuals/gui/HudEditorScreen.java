@@ -4,6 +4,7 @@ import com.externalvisuals.ExternalVisuals;
 import com.externalvisuals.config.ConfigManager;
 import com.externalvisuals.module.Module;
 import com.externalvisuals.modules.hud.HudModule;
+
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,6 +19,7 @@ public final class HudEditorScreen extends Screen {
             new ArrayList<>();
 
     private HudModule dragging;
+
     private float dragOffsetX;
     private float dragOffsetY;
 
@@ -55,6 +57,10 @@ public final class HudEditorScreen extends Screen {
             int mouseY,
             float delta
     ) {
+
+        /*
+         * Background
+         */
         DrawableHelper.fill(
                 matrices,
                 0,
@@ -64,26 +70,36 @@ public final class HudEditorScreen extends Screen {
                 0xE9000008
         );
 
+        /*
+         * Grid
+         */
         drawGrid(matrices);
 
-        DrawableHelper.drawCenteredString(
+        /*
+         * Title
+         */
+        drawCenteredText(
                 matrices,
-                textRenderer,
                 "HUD EDITOR",
                 width / 2,
                 18,
                 AMOLEDTheme.TEXT
         );
 
-        DrawableHelper.drawCenteredString(
+        /*
+         * Help text
+         */
+        drawCenteredText(
                 matrices,
-                textRenderer,
                 "Drag components • Mouse wheel = scale • Right click = reset",
                 width / 2,
                 34,
                 AMOLEDTheme.TEXT_MUTED
         );
 
+        /*
+         * HUD components
+         */
         for (HudModule hud : hudModules) {
             renderHudComponent(
                     matrices,
@@ -93,9 +109,11 @@ public final class HudEditorScreen extends Screen {
             );
         }
 
-        DrawableHelper.drawCenteredString(
+        /*
+         * Bottom hint
+         */
+        drawCenteredText(
                 matrices,
-                textRenderer,
                 "ESC — back",
                 width / 2,
                 height - 18,
@@ -110,8 +128,55 @@ public final class HudEditorScreen extends Screen {
         );
     }
 
+    /**
+     * Центрированный текст через TextRenderer.
+     *
+     * В Minecraft 1.16.5 DrawableHelper не содержит
+     * нужного drawCenteredString overload, поэтому
+     * рисуем напрямую через textRenderer.
+     */
+    private void drawCenteredText(
+            MatrixStack matrices,
+            String text,
+            float centerX,
+            float y,
+            int color
+    ) {
+        float textWidth =
+                textRenderer.getWidth(text);
+
+        textRenderer.drawWithShadow(
+                matrices,
+                text,
+                centerX - textWidth / 2.0f,
+                y,
+                color
+        );
+    }
+
+    /**
+     * Обычный текст с тенью.
+     */
+    private void drawText(
+            MatrixStack matrices,
+            String text,
+            float x,
+            float y,
+            int color
+    ) {
+        textRenderer.drawWithShadow(
+                matrices,
+                text,
+                x,
+                y,
+                color
+        );
+    }
+
     private void drawGrid(MatrixStack matrices) {
+
         for (int x = 0; x < width; x += 32) {
+
             DrawableHelper.fill(
                     matrices,
                     x,
@@ -123,6 +188,7 @@ public final class HudEditorScreen extends Screen {
         }
 
         for (int y = 0; y < height; y += 32) {
+
             DrawableHelper.fill(
                     matrices,
                     0,
@@ -140,8 +206,12 @@ public final class HudEditorScreen extends Screen {
             int mouseX,
             int mouseY
     ) {
-        int x = Math.round(hud.getX());
-        int y = Math.round(hud.getY());
+
+        int x =
+                Math.round(hud.getX());
+
+        int y =
+                Math.round(hud.getY());
 
         int baseWidth =
                 Math.max(
@@ -177,18 +247,29 @@ public final class HudEditorScreen extends Screen {
                         && mouseY >= y
                         && mouseY <= y + drawHeight;
 
+        /*
+         * Background
+         */
         int background;
 
         if (!hud.isEnabled()) {
-            background = 0x66101015;
+
+            background =
+                    0x66101015;
+
         } else if (hud.isBackgroundEnabled()) {
-            background = hovered
-                    ? 0xE62A2038
-                    : 0xD20A0A10;
+
+            background =
+                    hovered
+                            ? 0xE62A2038
+                            : 0xD20A0A10;
+
         } else {
-            background = hovered
-                    ? 0x99302040
-                    : 0x66202028;
+
+            background =
+                    hovered
+                            ? 0x99302040
+                            : 0x66202028;
         }
 
         DrawableHelper.fill(
@@ -200,9 +281,17 @@ public final class HudEditorScreen extends Screen {
                 background
         );
 
+        /*
+         * Border
+         */
         if (hud.isBorderEnabled()) {
-            int color = hud.getColor();
 
+            int color =
+                    hud.getColor();
+
+            /*
+             * Top
+             */
             DrawableHelper.fill(
                     matrices,
                     x,
@@ -212,6 +301,9 @@ public final class HudEditorScreen extends Screen {
                     color
             );
 
+            /*
+             * Bottom
+             */
             DrawableHelper.fill(
                     matrices,
                     x,
@@ -222,13 +314,19 @@ public final class HudEditorScreen extends Screen {
             );
         }
 
+        /*
+         * Label
+         */
         String label =
                 hud.getName()
-                        + (hud.isEnabled() ? "" : " [OFF]");
+                        + (hud.isEnabled()
+                        ? ""
+                        : " [OFF]");
 
         matrices.push();
 
         try {
+
             matrices.translate(
                     x + 8,
                     y + 7,
@@ -241,30 +339,38 @@ public final class HudEditorScreen extends Screen {
                     1.0f
             );
 
-            DrawableHelper.drawString(
+            drawText(
                     matrices,
-                    textRenderer,
                     label,
                     0,
                     0,
                     hud.getColor()
             );
+
         } finally {
+
             matrices.pop();
         }
 
+        /*
+         * Position + scale information
+         */
         if (hovered) {
-            DrawableHelper.drawString(
-                    matrices,
-                    textRenderer,
+
+            String info =
                     Math.round(hud.getX())
                             + ", "
                             + Math.round(hud.getY())
                             + "  "
                             + Math.round(
-                                    hud.getScale() * 100.0f
+                                    hud.getScale()
+                                            * 100.0f
                             )
-                            + "%",
+                            + "%";
+
+            drawText(
+                    matrices,
+                    info,
                     x + 8,
                     y + drawHeight + 3,
                     AMOLEDTheme.TEXT_MUTED
@@ -278,28 +384,41 @@ public final class HudEditorScreen extends Screen {
             double mouseY,
             int button
     ) {
+
+        /*
+         * Left click — start dragging
+         */
         if (button == 0) {
+
             for (HudModule hud : hudModules) {
 
-                int x = Math.round(hud.getX());
-                int y = Math.round(hud.getY());
+                int x =
+                        Math.round(hud.getX());
 
-                int w = Math.max(
-                        74,
-                        Math.round(
-                                (textRenderer.getWidth(
-                                        hud.getName()
-                                ) + 28)
-                                        * hud.getScale()
-                        )
-                );
+                int y =
+                        Math.round(hud.getY());
 
-                int h = Math.max(
-                        18,
-                        Math.round(
-                                24 * hud.getScale()
-                        )
-                );
+                int w =
+                        Math.max(
+                                74,
+                                Math.round(
+                                        (
+                                                textRenderer.getWidth(
+                                                        hud.getName()
+                                                ) + 28
+                                        )
+                                                * hud.getScale()
+                                )
+                        );
+
+                int h =
+                        Math.max(
+                                18,
+                                Math.round(
+                                        24
+                                                * hud.getScale()
+                                )
+                        );
 
                 if (mouseX >= x
                         && mouseX <= x + w
@@ -321,16 +440,24 @@ public final class HudEditorScreen extends Screen {
             }
         }
 
+        /*
+         * Right click — reset
+         */
         if (button == 1) {
+
             for (HudModule hud : hudModules) {
 
-                int x = Math.round(hud.getX());
-                int y = Math.round(hud.getY());
+                int x =
+                        Math.round(hud.getX());
+
+                int y =
+                        Math.round(hud.getY());
 
                 if (Math.abs(mouseX - x) <= 80
                         && Math.abs(mouseY - y) <= 40) {
 
                     resetPosition(hud);
+
                     return true;
                 }
             }
@@ -351,7 +478,9 @@ public final class HudEditorScreen extends Screen {
             double deltaX,
             double deltaY
     ) {
-        if (button == 0 && dragging != null) {
+
+        if (button == 0
+                && dragging != null) {
 
             float newX =
                     (float) mouseX
@@ -361,14 +490,22 @@ public final class HudEditorScreen extends Screen {
                     (float) mouseY
                             - dragOffsetY;
 
+            /*
+             * Grid snapping
+             */
             newX =
-                    Math.round(newX / grid)
-                            * grid;
+                    Math.round(
+                            newX / grid
+                    ) * grid;
 
             newY =
-                    Math.round(newY / grid)
-                            * grid;
+                    Math.round(
+                            newY / grid
+                    ) * grid;
 
+            /*
+             * Keep HUD inside screen
+             */
             dragging.setX(
                     Math.max(
                             0.0f,
@@ -407,9 +544,13 @@ public final class HudEditorScreen extends Screen {
             double mouseY,
             int button
     ) {
+
         if (button == 0) {
+
             dragging = null;
+
             ConfigManager.save();
+
             return true;
         }
 
@@ -426,21 +567,29 @@ public final class HudEditorScreen extends Screen {
             double mouseY,
             double amount
     ) {
+
         for (HudModule hud : hudModules) {
 
-            int x = Math.round(hud.getX());
-            int y = Math.round(hud.getY());
+            int x =
+                    Math.round(hud.getX());
+
+            int y =
+                    Math.round(hud.getY());
 
             if (Math.abs(mouseX - x) <= 100
                     && Math.abs(mouseY - y) <= 60) {
 
                 float next =
                         hud.getScale()
-                                + (amount > 0.0
-                                ? 0.05f
-                                : -0.05f);
+                                + (
+                                amount > 0.0
+                                        ? 0.05f
+                                        : -0.05f
+                        );
 
                 hud.setScale(next);
+
+                ConfigManager.save();
 
                 return true;
             }
@@ -453,13 +602,18 @@ public final class HudEditorScreen extends Screen {
         );
     }
 
-    private void resetPosition(HudModule hud) {
+    private void resetPosition(
+            HudModule hud
+    ) {
+
         hud.setHudPosition(
                 6.0f,
                 6.0f
         );
 
-        hud.setScale(1.0f);
+        hud.setScale(
+                1.0f
+        );
 
         ConfigManager.save();
     }
@@ -470,8 +624,14 @@ public final class HudEditorScreen extends Screen {
             int scanCode,
             int modifiers
     ) {
+
+        /*
+         * ESC
+         */
         if (keyCode == 256) {
+
             if (client != null) {
+
                 client.openScreen(
                         new ClickGuiScreen()
                 );
@@ -489,7 +649,9 @@ public final class HudEditorScreen extends Screen {
 
     @Override
     public void removed() {
+
         ConfigManager.save();
+
         super.removed();
     }
 }
