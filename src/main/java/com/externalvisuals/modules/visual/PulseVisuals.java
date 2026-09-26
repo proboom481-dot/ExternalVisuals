@@ -274,6 +274,10 @@ public final class PulseVisuals extends Module {
     public boolean showIslandModules() { return islandModules.isEnabled(); }
     public boolean showIslandTarget() { return islandTarget.isEnabled(); }
     public int getDamageTintColor() { return damageTintColor.getColor(); }
+    public boolean isHitMarkerEnabled() { return hitMarker.isEnabled(); }
+
+    public float getHitMarkerAlpha() { return getHitMarkerProgress(); }
+
     public float getHitMarkerProgress() {
         return (float) Math.max(0.0, Math.min(1.0,
                 (hitMarkerUntil - System.currentTimeMillis()) / (double) hitMarkerDuration.getValue()));
