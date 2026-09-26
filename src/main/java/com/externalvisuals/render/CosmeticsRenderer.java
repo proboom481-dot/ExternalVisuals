@@ -62,6 +62,7 @@ public final class CosmeticsRenderer {
 
     private static void renderPlayer(MatrixStack matrices, Camera camera, VertexConsumerProvider consumers, PlayerEntity player, Cosmetics c, boolean lowFps) {
         double cx = camera.getPos().x;
+        net.minecraft.client.MinecraftClient mc = net.minecraft.client.MinecraftClient.getInstance();
         double cy = camera.getPos().y;
         double cz = camera.getPos().z;
         float yaw = player.getYaw(1.0f) * 0.017453292f;

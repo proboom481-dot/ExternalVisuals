@@ -45,12 +45,12 @@ public final class PulseVisuals extends Module {
     private final SliderSetting killFeedDuration = addSetting(new SliderSetting("Kill Feed Duration", 2500, 500, 6000, 100));
     private final SliderSetting killFeedEntries = addSetting(new SliderSetting("Kill Feed Entries", 4, 1, 8, 1));
 
-    private final BooleanSetting weaponTrail = addSetting(new BooleanSetting("Weapon Trail", true));
+    private final BooleanSetting weaponTrailEnabled = addSetting(new BooleanSetting("Weapon Trail", true));
     private final SliderSetting weaponTrailLength = addSetting(new SliderSetting("Weapon Trail Length", 8, 2, 24, 1));
     private final ColorSetting weaponTrailColor = addSetting(new ColorSetting("Weapon Trail Color", 0xFFFFC83D));
     private final ColorSetting criticalTrailColor = addSetting(new ColorSetting("Critical Trail Color", 0xFFFF3B57));
 
-    private final BooleanSetting sprintTrail = addSetting(new BooleanSetting("Sprint Trail", false));
+    private final BooleanSetting sprintTrailEnabled = addSetting(new BooleanSetting("Sprint Trail", false));
     private final SliderSetting sprintTrailLength = addSetting(new SliderSetting("Sprint Trail Length", 10, 2, 30, 1));
     private final ColorSetting sprintTrailColor = addSetting(new ColorSetting("Sprint Trail Color", 0xFF42D9FF));
 
@@ -87,8 +87,8 @@ public final class PulseVisuals extends Module {
     private long lastHitAt;
     private long lastCritAt;
 
-    private final Deque<Vec3d> weaponTrail = new ArrayDeque<>();
-    private final Deque<Vec3d> sprintTrail = new ArrayDeque<>();
+    private final Deque<Vec3d> weaponTrailPoints = new ArrayDeque<>();
+    private final Deque<Vec3d> sprintTrailPoints = new ArrayDeque<>();
     private final List<KillEntry> kills = new ArrayList<>();
 
     public PulseVisuals() {
@@ -97,8 +97,8 @@ public final class PulseVisuals extends Module {
 
     @Override
     public void onDisable() {
-        weaponTrail.clear();
-        sprintTrail.clear();
+        weaponTrailPoints.clear();
+        sprintTrailPoints.clear();
         kills.clear();
         combo = 0;
         pulsePower = 0.0f;
@@ -116,12 +116,12 @@ public final class PulseVisuals extends Module {
             combo = 0;
         }
 
-        trimTrail(weaponTrail, weaponTrailLength.getValue().intValue());
-        trimTrail(sprintTrail, sprintTrailLength.getValue().intValue());
+        trimTrail(weaponTrailPoints, weaponTrailLength.getValue().intValue());
+        trimTrail(sprintTrailPoints, sprintTrailLength.getValue().intValue());
 
-        if (mc.player.isSprinting() && sprintTrail.isEmpty() ||
+        if (mc.player.isSprinting() && sprintTrailPoints.isEmpty() ||
                 mc.player.isSprinting() && mc.player.age % 2 == 0) {
-            sprintTrail.addFirst(mc.player.getPos().add(0.0, 0.05, 0.0));
+            sprintTrailPoints.addFirst(mc.player.getPos().add(0.0, 0.05, 0.0));
         }
 
         Iterator<KillEntry> iterator = kills.iterator();
@@ -159,9 +159,9 @@ public final class PulseVisuals extends Module {
             spawnBloodBurst(target);
         }
 
-        if (weaponTrail.isEnabled()) {
-            weaponTrail.addFirst(mc.player.getPos().add(0.0, 1.0, 0.0));
-            trimTrail(weaponTrail, weaponTrailLength.getValue().intValue());
+        if (weaponTrailEnabled.isEnabled()) {
+            weaponTrailPoints.addFirst(mc.player.getPos().add(0.0, 1.0, 0.0));
+            trimTrail(weaponTrailPoints, weaponTrailLength.getValue().intValue());
         }
 
         if (screenPulse.isEnabled()) {
@@ -234,13 +234,13 @@ public final class PulseVisuals extends Module {
     public int getComboColor() { return comboColor.getColor(); }
     public boolean isKillFeedEnabled() { return killFeed.isEnabled(); }
     public List<KillEntry> getKills() { return kills; }
-    public boolean isWeaponTrailEnabled() { return weaponTrail.isEnabled(); }
-    public Deque<Vec3d> getWeaponTrail() { return weaponTrail; }
+    public boolean isWeaponTrailEnabled() { return weaponTrailEnabled.isEnabled(); }
+    public Deque<Vec3d> getWeaponTrail() { return weaponTrailPoints; }
     public int getWeaponTrailLength() { return weaponTrailLength.getValue().intValue(); }
     public int getWeaponTrailColor() { return weaponTrailColor.getColor(); }
     public int getCriticalTrailColor() { return criticalTrailColor.getColor(); }
-    public boolean isSprintTrailEnabled() { return sprintTrail.isEnabled(); }
-    public Deque<Vec3d> getSprintTrail() { return sprintTrail; }
+    public boolean isSprintTrailEnabled() { return sprintTrailEnabled.isEnabled(); }
+    public Deque<Vec3d> getSprintTrail() { return sprintTrailPoints; }
     public int getSprintTrailLength() { return sprintTrailLength.getValue().intValue(); }
     public int getSprintTrailColor() { return sprintTrailColor.getColor(); }
     public boolean isDynamicCrosshairEnabled() { return dynamicCrosshair.isEnabled(); }
