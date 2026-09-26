@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.externalvisuals.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "InGameHudMixin",
+    "GameRendererMixin",
+    "LivingEntityMixin",
+    "RenderPhaseAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

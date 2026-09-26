@@ -1,0 +1,7 @@
+{
+  "music/voruem_alcohol_slowed": {
+    "sounds": [
+      {"name": "externalvisuals:music/voruem_alcohol_slowed", "stream": true}
+    ]
+  }
+}
