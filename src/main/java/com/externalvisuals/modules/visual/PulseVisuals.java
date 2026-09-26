@@ -90,7 +90,8 @@ public final class PulseVisuals extends Module {
     private double directionAngle;
     private int combo;
     private long lastHitAt;
-    private long lastCritAt;\n    private long hitMarkerUntil;
+    private long lastCritAt;
+    private long hitMarkerUntil;
 
     private final Deque<Vec3d> weaponTrailPoints = new ArrayDeque<>();
     private final Deque<Vec3d> sprintTrailPoints = new ArrayDeque<>();
@@ -108,7 +109,8 @@ public final class PulseVisuals extends Module {
         combo = 0;
         pulsePower = 0.0f;
         pulseUntil = 0L;
-        directionUntil = 0L;\n        hitMarkerUntil = 0L;
+        directionUntil = 0L;
+        hitMarkerUntil = 0L;
     }
 
     @Override
