@@ -8,7 +8,6 @@ import com.externalvisuals.setting.StringSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.scoreboard.ScoreboardTeam;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 
@@ -118,7 +117,6 @@ public final class AimAssist extends Module {
     private boolean isSameTeam(Entity entity) {
         if (!(entity instanceof PlayerEntity)) return false;
         if (mc.player.isTeammate(entity)) return true;
-        ScoreboardTeam mine = mc.player.getScoreboardTeam();
         ScoreboardTeam other = entity.getScoreboardTeam();
         return mine != null && other != null && mine.getName().equals(other.getName());
     }
