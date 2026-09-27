@@ -117,8 +117,7 @@ public final class AimAssist extends Module {
     private boolean isSameTeam(Entity entity) {
         if (!(entity instanceof PlayerEntity)) return false;
         if (mc.player.isTeammate(entity)) return true;
-        ScoreboardTeam other = entity.getScoreboardTeam();
-        return mine != null && other != null && mine.getName().equals(other.getName());
+        return mc.player.isTeammate(entity);
     }
 
     private double scoreTarget(Entity entity, double yawDifference, double distance) {
