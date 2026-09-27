@@ -61,6 +61,7 @@ public final class CosmeticsRenderer {
     }
 
     private static void renderPlayer(MatrixStack matrices, Camera camera, VertexConsumerProvider consumers, PlayerEntity player, Cosmetics c, boolean lowFps) {
+        MinecraftClient mc = MinecraftClient.getInstance();
         double cx = camera.getPos().x;
         double cy = camera.getPos().y;
         double cz = camera.getPos().z;
