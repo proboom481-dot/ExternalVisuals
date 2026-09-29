@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "externalvisuals",
+  "version": "${version}",
+  "name": "ExternalVisuals",
+  "description": "Visual client for Minecraft 1.16.5.",
+  "authors": ["ExternalVisuals Team"],
+  "contact": {"sources": "https://github.com/proboom481-dot/ExternalVisuals"},
+  "license": "All Rights Reserved",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.externalvisuals.ExternalVisuals"]
+  },
+  "depends": {
+    "fabricloader": ">=0.11.0",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}
