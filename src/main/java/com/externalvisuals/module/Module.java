@@ -1,0 +1,3 @@
+package com.externalvisuals.module;
+import com.externalvisuals.setting.Setting; import net.minecraft.client.MinecraftClient; import java.util.*;
+public abstract class Module { protected final MinecraftClient mc=MinecraftClient.getInstance(); private final String name; private final List<Setting<?>> settings=new ArrayList<>(); private boolean enabled=true; protected Module(String name){this.name=name;} public String getName(){return name;} public boolean isEnabled(){return enabled;} public void setEnabled(boolean v){enabled=v;} public void toggle(){enabled=!enabled;} public List<Setting<?>> getSettings(){return settings;} protected <T extends Setting<?>> T addSetting(T s){settings.add(s);return s;} public void tick(){} }

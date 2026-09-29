@@ -1,0 +1,3 @@
+package com.externalvisuals.module;
+import com.externalvisuals.modules.*; import java.util.*;
+public class ModuleManager { private final List<Module> modules=new ArrayList<>(); public ModuleManager(){register(new HitParticles());register(new DamageNumbers());register(new TargetHUD());register(new CriticalEffects());register(new Trajectory());register(new Hitmarker());register(new LowHP());register(new CustomCrosshair());register(new KillEffects());register(new ArmorPotionHUD());} private void register(Module m){modules.add(m);} public List<Module> all(){return modules;} public <T extends Module>T get(Class<T> c){for(Module m:modules)if(c.isInstance(m))return c.cast(m);return null;} public void tick(){for(Module m:modules)if(m.isEnabled())m.tick();} }

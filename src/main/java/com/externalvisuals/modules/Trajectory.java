@@ -1,0 +1,1 @@
+package com.externalvisuals.modules; import com.externalvisuals.module.Module; import com.externalvisuals.setting.*; public class Trajectory extends Module {public final SliderSetting length=addSetting(new SliderSetting("Length",40,10,100,5)); public final SliderSetting step=addSetting(new SliderSetting("Step",.15,.05,.4,.01)); public Trajectory(){super("Trajectory");}}

@@ -1,0 +1,1 @@
+package com.externalvisuals.modules; import com.externalvisuals.module.Module; import com.externalvisuals.setting.*; public class LowHP extends Module {public final SliderSetting threshold=addSetting(new SliderSetting("Threshold",5,1,15,.5)); public final SliderSetting pulse=addSetting(new SliderSetting("Pulse",.65,.1,1,.05)); public LowHP(){super("Low HP Warning");}}

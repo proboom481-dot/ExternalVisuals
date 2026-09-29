@@ -1,0 +1,1 @@
+package com.externalvisuals.modules; import com.externalvisuals.module.Module; import com.externalvisuals.setting.*; public class ArmorPotionHUD extends Module {public final BooleanSetting armor=addSetting(new BooleanSetting("Armor",true)); public final BooleanSetting potions=addSetting(new BooleanSetting("Potions",true)); public ArmorPotionHUD(){super("Armor & Potion HUD");}}
